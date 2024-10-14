@@ -47,20 +47,22 @@ class MotorController:
     cur_direction: Direction = Direction.stop
 
     @thread_decorator
-    def add_right_speed(self, speed: int):
-        self.cur_right_speed += speed
+    def set_right_speed(self, speed: int):
+        self.cur_right_speed = speed
         if self.cur_right_speed > 100:
             self.cur_right_speed = 100
         if self.cur_right_speed < 0:
             self.cur_right_speed = 0
+        self.motor.set_right_speed(self.cur_right_speed)
 
     @thread_decorator
-    def add_left_speed(self, speed: int):
-        self.cur_left_speed += speed
+    def set_left_speed(self, speed: int):
+        self.cur_left_speed = speed
         if self.cur_left_speed > 100:
             self.cur_left_speed = 100
         if self.cur_left_speed < 0:
             self.cur_left_speed = 0
+        self.motor.set_left_speed(self.cur_left_speed)
 
     def __init__(self):
         self.motor = Motor()
@@ -80,58 +82,58 @@ class MotorController:
         self.cur_direction = Direction.backward
         self.motor.set_direction(self.cur_direction)
 
-    @thread_decorator
-    def increase_speed(self):
-        self.add_right_speed(10)
-        self.add_left_speed(10)
-        self.motor.set_right_speed(self.cur_right_speed)
-        self.motor.set_left_speed(self.cur_left_speed)
-        print(f"left speed: {self.cur_left_speed}    right: {self.cur_right_speed}")
+    # @thread_decorator
+    # def increase_speed(self):
+    #     self.add_right_speed(10)
+    #     self.add_left_speed(10)
+    #     self.motor.set_right_speed(self.cur_right_speed)
+    #     self.motor.set_left_speed(self.cur_left_speed)
+    #     print(f"left speed: {self.cur_left_speed}    right: {self.cur_right_speed}")
+    #
+    # @thread_decorator
+    # def degrease_speed(self):
+    #     self.add_right_speed(-10)
+    #     self.add_left_speed(-10)
+    #     self.motor.set_right_speed(self.cur_right_speed)
+    #     self.motor.set_left_speed(self.cur_left_speed)
+    #     print(f"left speed: {self.cur_left_speed}    right: {self.cur_right_speed}")
+    #
+    # @thread_decorator
+    # def right(self):
+    #     self.add_right_speed(-10)
+    #     self.add_left_speed(+10)
+    #
+    #     print(f"left speed: {self.cur_left_speed}    right: {self.cur_right_speed}")
+    #     self.motor.set_right_speed(self.cur_right_speed)
+    #     self.motor.set_left_speed(self.cur_left_speed)
+    #
+    # @thread_decorator
+    # def left(self):
+    #     self.add_right_speed(+10)
+    #     self.add_left_speed(-10)
+    #
+    #     print(f"left speed: {self.cur_left_speed}    right: {self.cur_right_speed}")
+    #     self.motor.set_right_speed(self.cur_right_speed)
+    #     self.motor.set_left_speed(self.cur_left_speed)
 
-    @thread_decorator
-    def degrease_speed(self):
-        self.add_right_speed(-10)
-        self.add_left_speed(-10)
-        self.motor.set_right_speed(self.cur_right_speed)
-        self.motor.set_left_speed(self.cur_left_speed)
-        print(f"left speed: {self.cur_left_speed}    right: {self.cur_right_speed}")
-
-    @thread_decorator
-    def right(self):
-        self.add_right_speed(-10)
-        self.add_left_speed(+10)
-
-        print(f"left speed: {self.cur_left_speed}    right: {self.cur_right_speed}")
-        self.motor.set_right_speed(self.cur_right_speed)
-        self.motor.set_left_speed(self.cur_left_speed)
-
-    @thread_decorator
-    def left(self):
-        self.add_right_speed(+10)
-        self.add_left_speed(-10)
-
-        print(f"left speed: {self.cur_left_speed}    right: {self.cur_right_speed}")
-        self.motor.set_right_speed(self.cur_right_speed)
-        self.motor.set_left_speed(self.cur_left_speed)
-
-
-def main():
-    import keyboard
-
-    controller = MotorController()
-    keyboard.add_hotkey('p', controller.stop)
-    keyboard.add_hotkey('w', controller.forward)
-    keyboard.add_hotkey('s', controller.backward)
-    keyboard.add_hotkey('d', controller.right)
-    keyboard.add_hotkey('a', controller.left)
-    keyboard.add_hotkey('k', controller.degrease_speed)
-    keyboard.add_hotkey('l', controller.increase_speed)
-
-
-    print("Нажмите ESC для остановки")
-    controller.stop()
-    keyboard.wait('esc')
-
-
-if __name__ == '__main__':
-    main()
+#
+# def main():
+#     import keyboard
+#
+#     controller = MotorController()
+#     keyboard.add_hotkey('p', controller.stop)
+#     keyboard.add_hotkey('w', controller.forward)
+#     keyboard.add_hotkey('s', controller.backward)
+#     keyboard.add_hotkey('d', controller.right)
+#     keyboard.add_hotkey('a', controller.left)
+#     keyboard.add_hotkey('k', controller.degrease_speed)
+#     keyboard.add_hotkey('l', controller.increase_speed)
+#
+#
+#     print("Нажмите ESC для остановки")
+#     controller.stop()
+#     keyboard.wait('esc')
+#
+#
+# if __name__ == '__main__':
+#     main()
