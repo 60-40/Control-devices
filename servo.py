@@ -8,32 +8,6 @@ host = "192.168.2.165"
 port = 2001
 
 
-def send_command(command):
-    try:
-        # Создаем сокет
-        s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        print(f"Соединение с {host}:{port}")
-
-        # Устанавливаем соединение
-        s.connect((host, port))
-        print(f"Отправка команды: {command}")
-
-        # Отправляем команду
-        s.sendall(command)
-
-        # Добавляем небольшой задержку между отправками команд
-        time.sleep(0.1)
-
-        return True
-    except socket.error as e:
-        print(f"Ошибка сокета: {e}")
-        return False
-    finally:
-        # Закрываем соединение
-        s.close()
-        print("Соединение закрыто")
-
-
 class Servo(Device):
     DIRECTION_DEVICE_BYTE = b'\x01'
     id: int
@@ -79,34 +53,6 @@ class Servo(Device):
         return self.angle
 
 
-def test_servo(id):
-    print(f"Проверка углов поворота сервопривода {id}")
-    for angle in range(0, 181, 45):
-        # Создание команды с изменённым значением угла
-        command = b'\xff\x01' + bytes([id + 1]) + struct.pack('B',
-                                                              angle) + b'\xff'
-        result = send_command(command)
-        print(angle, command)
-        time.sleep(1)
-
-
-servo8 = Servo(8)
-servo1 = Servo(1)
-servo2 = Servo(2)
-servo3 = Servo(3)
-servo4 = Servo(4)
-servo7 = Servo(7)
-
-
-def set_default():
-    servo1.set_default_angle()
-    servo2.set_default_angle()
-    servo3.set_default_angle()
-    servo4.set_default_angle()
-    servo7.set_default_angle()
-    servo8.set_default_angle()
-
-
 class Manipulator(Device):
     def __init__(self):
         self.servo1 = Servo(1)
@@ -149,14 +95,29 @@ class Manipulator(Device):
         time.sleep(0.7)
         self.set_default()
 
-def main():
 
-    set_default()
+def main():
+    # set_default()
     manipulator = Manipulator()
-    # manipulator.set_default()
+    manipulator.set_default()
     # manipulator.press_button()
     # manipulator.grub_item()
-    manipulator.put_item()
+    # manipulator.put_item()
+    # servo8 = Servo(8)
+    # servo1 = Servo(1)
+    # servo2 = Servo(2)
+    # servo3 = Servo(3)
+    # servo4 = Servo(4)
+    # servo7 = Servo(7)
+    #
+    # def set_default():
+    #     servo1.set_default_angle()
+    #     servo2.set_default_angle()
+    #     servo3.set_default_angle()
+    #     servo4.set_default_angle()
+    #     servo7.set_default_angle()
+    #     servo8.set_default_angle()
+
 
 if __name__ == "__main__":
     main()
