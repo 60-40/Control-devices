@@ -95,13 +95,24 @@ class Manipulator(Device):
         time.sleep(0.7)
         self.set_default()
 
+    def put_item_into_basket(self):
+        self.servo4.set_angle(80)
+        time.sleep(0.7)
+        self.servo1.set_angle(150)
+        self.servo2.set_angle(120)
+        time.sleep(0.7)
+        self.servo3.set_angle(40)
+        time.sleep(0.7)
+        self.set_default()
+
 
 def main():
     # set_default()
     manipulator = Manipulator()
-    manipulator.set_default()
+    # manipulator.set_default()
+    manipulator.put_item_into_basket()
     # manipulator.press_button()
-    # manipulator.grub_item()
+    # manipulator.grub_ite m()
     # manipulator.put_item()
     # servo8 = Servo(8)
     # servo1 = Servo(1)
