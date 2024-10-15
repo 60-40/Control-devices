@@ -6,10 +6,10 @@ from device import Device
 
 class Direction(Enum):
     stop = b'\x00'
-    forward = b'\x04'
-    backward = b'\x03'
-    left = b'\x02'
-    right = b'\x01'
+    forward = b'\x01'
+    backward = b'\x02'
+    left = b'\x03'
+    right = b'\x04'
 
 
 class Motor(Device):
@@ -21,12 +21,10 @@ class Motor(Device):
                           direction.value + b'\x00' + self.PKG_END)
 
     def set_left_speed(self, speed: int):
-        speed = speed % 256
-        self.send_command(self.PKG_START + self.SPEED_DEVICE_BYTE + b'\x01' + struct.pack('B', speed) + self.PKG_END)
+        self.send_command(self.PKG_START + self.SPEED_DEVICE_BYTE + b'\x01' + struct.pack('B', abs(speed) % 100) + struct.pack('B', int(speed < 0)) + self.PKG_END)
 
     def set_right_speed(self, speed: int):
-        speed = speed % 256
-        self.send_command(self.PKG_START + self.SPEED_DEVICE_BYTE + b'\x02' + struct.pack('B', speed) + self.PKG_END)
+        self.send_command(self.PKG_START + self.SPEED_DEVICE_BYTE + b'\x02' + struct.pack('B', abs(speed) % 100) + struct.pack('B', int(speed < 0)) + self.PKG_END)
 
     def set_speed(self, speed: int):
         self.set_right_speed(speed)
@@ -51,8 +49,8 @@ class MotorController:
         self.cur_right_speed = speed
         if self.cur_right_speed > 100:
             self.cur_right_speed = 100
-        if self.cur_right_speed < 0:
-            self.cur_right_speed = 0
+        if self.cur_right_speed < -100:
+            self.cur_right_speed = -100
         self.motor.set_right_speed(self.cur_right_speed)
 
     @thread_decorator
@@ -60,13 +58,13 @@ class MotorController:
         self.cur_left_speed = speed
         if self.cur_left_speed > 100:
             self.cur_left_speed = 100
-        if self.cur_left_speed < 0:
-            self.cur_left_speed = 0
+        if self.cur_left_speed < -100:
+            self.cur_left_speed = -100
         self.motor.set_left_speed(self.cur_left_speed)
 
     def __init__(self):
         self.motor = Motor()
-        self.motor.set_speed(self.cur_right_speed)
+        # self.motor.set_speed(self.cur_right_speed)
 
     @thread_decorator
     def stop(self):
@@ -110,7 +108,7 @@ class MotorController:
     # @thread_decorator
     # def left(self):
     #     self.add_right_speed(+10)
-    #     self.add_left_speed(-10)
+    #     self.add_left_speed(-10)40
     #
     #     print(f"left speed: {self.cur_left_speed}    right: {self.cur_right_speed}")
     #     self.motor.set_right_speed(self.cur_right_speed)
@@ -135,5 +133,15 @@ class MotorController:
 #     keyboard.wait('esc')
 #
 #
-# if __name__ == '__main__':
-#     main()
+
+
+if __name__ == '__main__':
+    # main()
+    motor = MotorController()
+    motor.forward()
+    motor.set_left_speed(10)
+    motor.set_right_speed(10)
+
+    # motor.backward()
+
+
