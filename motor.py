@@ -1,7 +1,8 @@
 import threading
 import struct
+import time
 from enum import Enum
-from device import Device
+from device import Device, thread_decorator
 
 
 class Direction(Enum):
@@ -29,13 +30,6 @@ class Motor(Device):
     def set_speed(self, speed: int):
         self.set_right_speed(speed)
         self.set_left_speed(speed)
-
-
-def thread_decorator(func):
-    def wrapper(*args, **kwargs):
-        thread = threading.Thread(target=func, args=args, kwargs=kwargs)
-        thread.start()
-    return wrapper
 
 
 class MotorController:
@@ -79,6 +73,14 @@ class MotorController:
     def backward(self):
         self.cur_direction = Direction.backward
         self.motor.set_direction(self.cur_direction)
+
+    @thread_decorator
+    def move_forward(self, moving_time: int):
+        # self.forward()
+        self.motor.set_speed(50)
+        time.sleep(moving_time)
+        self.stop()
+
 
     # @thread_decorator
     # def increase_speed(self):
@@ -139,8 +141,8 @@ if __name__ == '__main__':
     # main()
     motor = MotorController()
     motor.forward()
-    motor.set_left_speed(10)
-    motor.set_right_speed(10)
+    motor.set_left_speed(40)
+    motor.set_right_speed(40)
 
     # motor.backward()
 

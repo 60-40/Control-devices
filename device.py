@@ -1,6 +1,14 @@
 import socket
+import threading
 from abc import ABC
 from config import host, port
+
+
+def thread_decorator(func):
+    def wrapper(*args, **kwargs):
+        thread = threading.Thread(target=func, args=args, kwargs=kwargs)
+        thread.start()
+    return wrapper
 
 
 class Device(ABC):

@@ -13,12 +13,12 @@ class Servo(Device):
     id: int
     angle: int
     default_angles = {
-        1: 180,
-        2: 180,
+        1: 160,
+        2: 150,
         3: 80,
         4: 0,
-        7: 86,
-        8: 90
+        7: 99,
+        8: 0
     }
 
     def __init__(self, id_: int):
@@ -61,29 +61,33 @@ class Manipulator(Device):
         self.servo4 = Servo(4)
 
     def set_default(self):
+        self.servo4.set_default_angle()
+        self.servo3.set_default_angle()
         self.servo1.set_default_angle()
         self.servo2.set_default_angle()
-        self.servo3.set_default_angle()
-        self.servo4.set_default_angle()
 
     def press_button(self):
-        self.servo4.set_angle(0)
-        time.sleep(0.5)
-        self.servo1.set_angle(100)
+        self.servo1.set_angle(60)
         time.sleep(0.5)
         self.set_default()
 
     def grub_item(self):
-        self.servo1.set_angle(160)
+        self.servo1.set_angle(120)
         self.servo3.set_angle(40)
-        self.servo2.set_angle(80)
+        self.servo2.set_angle(60)
         self.servo4.set_angle(90)
 
         time.sleep(0.5)
-        self.servo1.set_angle(140)
+        self.servo1.set_angle(100)
         time.sleep(0.5)
         self.servo3.set_angle(80)
         time.sleep(0.5)
+        self.servo3.set_angle(100)
+        self.servo2.set_angle(130)
+        time.sleep(0.5)
+        self.servo4.set_angle(0)
+        time.sleep(0.5)
+
         self.set_default()
 
     def put_item(self):
@@ -96,12 +100,15 @@ class Manipulator(Device):
         self.set_default()
 
     def put_item_into_basket(self):
+        self.servo1.set_angle(130)
+        self.servo2.set_angle(80)
+        time.sleep(0.7)
         self.servo4.set_angle(80)
         time.sleep(0.7)
-        self.servo1.set_angle(150)
-        self.servo2.set_angle(120)
-        time.sleep(0.7)
         self.servo3.set_angle(40)
+        time.sleep(0.7)
+        self.servo3.set_default_angle()
+        self.servo4.set_default_angle()
         time.sleep(0.7)
         self.set_default()
 
@@ -109,26 +116,26 @@ class Manipulator(Device):
 def main():
     # set_default()
     manipulator = Manipulator()
-    # manipulator.set_default()
-    manipulator.put_item_into_basket()
+    manipulator.set_default()
+    # manipulator.put_item_into_basket()
     # manipulator.press_button()
-    # manipulator.grub_ite m()
+    # manipulator.grub_item()
     # manipulator.put_item()
-    # servo8 = Servo(8)
+    servo8 = Servo(8)
     # servo1 = Servo(1)
     # servo2 = Servo(2)
     # servo3 = Servo(3)
     # servo4 = Servo(4)
-    # servo7 = Servo(7)
+    servo7 = Servo(7)
     #
-    # def set_default():
+    def set_default():
     #     servo1.set_default_angle()
     #     servo2.set_default_angle()
     #     servo3.set_default_angle()
     #     servo4.set_default_angle()
-    #     servo7.set_default_angle()
-    #     servo8.set_default_angle()
-
+        servo7.set_default_angle()
+        servo8.set_default_angle()
+    set_default()
 
 if __name__ == "__main__":
     main()
