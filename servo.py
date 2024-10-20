@@ -13,12 +13,12 @@ class Servo(Device):
     id: int
     angle: int
     default_angles = {
-        1: 160,
+        1: 180,
         2: 150,
-        3: 80,
-        4: 0,
-        7: 99,
-        8: 0
+        3: 85,
+        4: 180,
+        7: 105,
+        8: 27
     }
 
     def __init__(self, id_: int):
@@ -78,14 +78,14 @@ class Manipulator(Device):
         self.servo4.set_angle(90)
 
         time.sleep(0.5)
-        self.servo1.set_angle(100)
+        self.servo1.set_angle(90)
         time.sleep(0.5)
         self.servo3.set_angle(80)
         time.sleep(0.5)
-        self.servo3.set_angle(100)
+        # self.servo3.set_angle(80)
         self.servo2.set_angle(130)
         time.sleep(0.5)
-        self.servo4.set_angle(0)
+        self.servo4.set_default_angle()
         time.sleep(0.5)
 
         self.set_default()
@@ -113,29 +113,27 @@ class Manipulator(Device):
         self.set_default()
 
 
+class Camera(Device):
+    def __init__(self):
+        self.servo7 = Servo(7)
+        self.servo8 = Servo(8)
+
+    def set_position(self, position: int):
+        if position == 0:
+            self.servo7.set_default_angle()
+            self.servo8.set_default_angle()
+        if position == 1:
+            self.servo7.set_angle(115)
+            self.servo8.set_angle(13)
+
+
 def main():
     # set_default()
     manipulator = Manipulator()
-    manipulator.set_default()
-    # manipulator.put_item_into_basket()
-    # manipulator.press_button()
-    # manipulator.grub_item()
-    # manipulator.put_item()
-    servo8 = Servo(8)
-    # servo1 = Servo(1)
-    # servo2 = Servo(2)
-    # servo3 = Servo(3)
-    # servo4 = Servo(4)
-    servo7 = Servo(7)
-    #
-    def set_default():
-    #     servo1.set_default_angle()
-    #     servo2.set_default_angle()
-    #     servo3.set_default_angle()
-    #     servo4.set_default_angle()
-        servo7.set_default_angle()
-        servo8.set_default_angle()
-    set_default()
+    manipulator.grub_item()
+    camera = Camera()
+    camera.set_position(0)
+
 
 if __name__ == "__main__":
     main()

@@ -31,6 +31,9 @@ class Motor(Device):
         self.set_right_speed(speed)
         self.set_left_speed(speed)
 
+    def send_error(self, ex: int, ey: int):
+        self.send_command(self.PKG_START + b'\x43' + struct.pack('B', ex))
+
 
 class MotorController:
     motor: Motor
@@ -141,8 +144,8 @@ if __name__ == '__main__':
     # main()
     motor = MotorController()
     motor.forward()
-    motor.set_left_speed(40)
-    motor.set_right_speed(40)
+    motor.set_left_speed(99)
+    motor.set_right_speed(99)
 
     # motor.backward()
 
