@@ -127,7 +127,7 @@ class Camera(Device):
             self.servo8.set_angle(13)
         if position == 2:
             self.servo7.set_angle(105)
-            self.servo8.set_angle(35)
+            self.servo8.set_angle(39)
 
 def main():
     # set_default()
