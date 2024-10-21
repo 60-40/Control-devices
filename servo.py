@@ -74,8 +74,8 @@ class Manipulator(Device):
     def grub_item(self):
         self.servo1.set_angle(120)
         self.servo3.set_angle(40)
-        self.servo2.set_angle(60)
         self.servo4.set_angle(90)
+        self.servo2.set_angle(60)
 
         time.sleep(0.5)
         self.servo1.set_angle(90)
@@ -125,14 +125,18 @@ class Camera(Device):
         if position == 1:
             self.servo7.set_angle(115)
             self.servo8.set_angle(13)
-
+        if position == 2:
+            self.servo7.set_angle(105)
+            self.servo8.set_angle(35)
 
 def main():
     # set_default()
     manipulator = Manipulator()
+    # manipulator.press_button()
+    # manipulator.set_default()
     manipulator.grub_item()
-    camera = Camera()
-    camera.set_position(0)
+    # camera = Camera()
+    # camera.set_position(2)
 
 
 if __name__ == "__main__":
